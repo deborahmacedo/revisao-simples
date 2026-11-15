@@ -1,0 +1,17 @@
+name: Workfloe ola
+
+on:
+  workflow_dispatch:
+    inputs:
+      nome:
+        description: 'Digite o nome'
+        required: false
+        default: turma 
+        type: string
+
+jobs: 
+  dizer-ola:
+  runs-on: ubuntu-latest
+  steps: 
+    -name: Exibir saudação
+    run: echo "Olá, ${{ inputs.nome }}"
