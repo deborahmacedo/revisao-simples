@@ -14,7 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - name: Exibir saudação
-        run: echo "Olá, ${{ inputs.nome }}"
+        env: 
+          NOME: ${{ inputs.nome }}
+        run: echo "Olá, NOME"
       - name: rodar no docker
         run: docker --version
   dizer-fim:
