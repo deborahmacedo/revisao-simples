@@ -11,7 +11,9 @@ on:
 
 jobs: 
   dizer-ola:
-  runs-on: ubuntu-latest
-  steps: 
-    -name: Exibir saudação
-    run: echo "Olá, ${{ inputs.nome }}"
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Exibir saudação
+        run: echo "Olá, ${{ inputs.nome }}"
+      - name: rodar no docker
+        run: docker --version
