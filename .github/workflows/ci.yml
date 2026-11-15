@@ -21,3 +21,27 @@ jobs:
         - run: pip install -r requirements-dev.txt
         - run: ruff check .
         - run: pytest -v
+    imagem:
+      needs: testes 
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v4
+          
+          - name: construir imagem 
+            run: docker build -t calculadora:ci .
+          - name: Subir o conteiner
+            run: docker run -d --name calc -p 5000:5000 calculadora:ci
+          - name: esperar api
+            run: |
+              for i in $(seq 1 15); do 
+                curl -fs http://localhost:5000/saude && exit 0
+                sleep 2
+                done
+                exit 1
+          - name: testar saude 
+            run: curl -fs  http://localhost:5000/saude | grep '"status":"ok"'
+          - name: log do conteiner         
+            if: failure()
+            run: docker logs calc
+
+                
