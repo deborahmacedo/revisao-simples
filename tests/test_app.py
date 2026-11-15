@@ -10,7 +10,7 @@ def cliente():
 
 
 def test_saude(cliente):
-    assert cliente.get("/saude").get_json() == {"status": "erro"}
+    assert cliente.get("/saude").get_json() == {"status": "ok"}
 
 
 def test_lista_comeca_vazia(cliente):
