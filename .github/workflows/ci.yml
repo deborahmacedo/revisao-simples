@@ -45,8 +45,13 @@ jobs:
               curl -fs -X POST -H "Content-Type: application/json" -d '{"titulo": "Estudar Docker"}' http://localhost:5000/tarefas
               curl -fs -X POST -H "Content-Type: application/json" -d '{"titulo": "Estudar Actions"}' http://localhost:5000/tarefas
               curl -fs -X POST -H "Content-Type: application/json" -d '{"titulo": "Entregar Revisao"}' http://localhost:5000/tarefas
-          - name: exportar o volukme
-            run:  docker run --rm -v historico:/dados alpine cat /dados/historico.log > historico.log
+          - name: exportar o volume
+            run: docker run --rm -v historico:/dados alpine cat /dados/historico.log > historico.log
+          - name: Publicar como artefato
+            uses: actions/upload-artifact@v4
+            with:
+              name: historico
+              path: historico.log
           - name: log do conteiner         
             if: failure()
             run: docker logs calc
