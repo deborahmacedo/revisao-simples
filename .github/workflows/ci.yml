@@ -30,7 +30,7 @@ jobs:
           - name: construir imagem 
             run: docker build -t calculadora:ci .
           - name: Subir o conteiner
-            run: docker run -d --name calc -p 5000:5000 calculadora:ci
+            run: docker run -d --name calc -p 5000:5000 -v historico:/dados calculadora:ci
           - name: esperar api
             run: |
               for i in $(seq 1 15); do 
@@ -40,6 +40,13 @@ jobs:
                 exit 1
           - name: testar saude 
             run: curl -fs  http://localhost:5000/saude | grep '"status":"ok"'
+          - name: criar tarefas  
+            run: |
+              curl -fs -X POST -H "Content-Type: application/json" -d '{"titulo": "Estudar Docker"}' http://localhost:5000/tarefas
+              curl -fs -X POST -H "Content-Type: application/json" -d '{"titulo": "Estudar Actions"}' http://localhost:5000/tarefas
+              curl -fs -X POST -H "Content-Type: application/json" -d '{"titulo": "Entregar Revisao"}' http://localhost:5000/tarefas
+          - name: exportar o volukme
+            run:  docker run --rm -v historico:/dados alpine cat /dados/historico.log > historico.log
           - name: log do conteiner         
             if: failure()
             run: docker logs calc
