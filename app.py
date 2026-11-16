@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request
 
 from repositorio import criar_repositorio
@@ -22,7 +23,14 @@ def criar_app(repo=None):
         titulo = str(dados.get("titulo", "")).strip()
         if not titulo:
             return {"erro": "informe um título"}, 400
-        return repo.criar(titulo), 201
+        tarefa = repo.criar(titulo)
+
+        historico_path = os.environ.get("HISTORICO")
+        if historico_path:
+            with open(historico_path, "a", encoding="utf-8") as f:
+                f.write(f"Tarefa criada: {titulo}\n")
+
+        return tarefa, 201
 
     return app
 
